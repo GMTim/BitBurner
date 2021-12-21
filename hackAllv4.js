@@ -1,7 +1,7 @@
 const Info = {
 	moneyScript: "getMoney.js",
 	startServers: ["home", "BabySmurf", "BigPapaSmurf"],
-	shouldReinfect: true,
+	shouldReinfect: false,
 	infectionTarget: "omega-net",
 }
 class AllOpeners {
@@ -99,7 +99,7 @@ class Infector {
 class ServerRecursion {
 	constructor(ns) {
 		this.ns = ns
-		this.allServers = Info.startServers
+		this.allServers = Array.from(Info.startServers)
 	}
 	async serverLoop(serversList) {
 		const ns = this.ns
