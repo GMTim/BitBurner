@@ -10,6 +10,8 @@ export class Server {
     get maxMoney() { return this.ns.getServerMaxMoney(this.server) }
     get requiredHackingLevel() { return this.ns.getServerRequiredHackingLevel(this.server) }
     get canHack() { return this.requiredHackingLevel <= this.ns.getHackingLevel() }
+    get minSercurityLevel() { return this.ns.getServerMinSecurityLevel(this.server) }
+    get maxSercurityLevel() { return this.ns.getServerSecurityLevel(this.server) }
     isRunningScript(script) { return this.ns.scriptRunning(script, this.server) }
     killAll() { this.ns.killall(this.server) }
     async copy(file) { await this.ns.scp(file, this.server) }
@@ -63,30 +65,50 @@ export class Nuker {
         this.reporter.report("Nuked!")
     }
 }
+class HackScript {
+    constructor(name) {
+        this.name = name
+    }
+    static get Hack() { return new HackScript("hack.js") }
+    static get Weaken() { return new HackScript("weaken.js") }
+    static get Grow() { return new HackScript("grow.js") }
+    static get allNames() { return [this.Hack.name, this.Weaken.name, this.Grow.name] }
+}
 export class HackInfector {
-    constructor(ns, server, script) {
+    constructor(ns, server) {
         this.ns = ns
         this.server = ns.server
-        this.script = script
         this.server = new Server(ns, server)
         this.reporter = new Reporter(ns, server)
     }
-    get scriptRam() { return this.ns.getScriptRam(this.script) }
-    get threads() { return Math.floor(this.server.maxRam / this.scriptRam) }
-    async infect(target, reinfect) {
-        const infectAgain = reinfect ?? false
-        if (this.threads <= 0) {
+    get serverRunningScript() { return HackScript.allNames.reduce((v, n) => v || this.server.isRunningScript(n), false) }
+    shouldWeaken(server) { return server.minSercurityLevel + 5 <= server.maxSercurityLevel }
+    shouldGrow(server) { return server.maxMoney * 0.75 <= server.availableMoney }
+    scriptRam(script) { return this.ns.getScriptRam(script) }
+    threads(script) { return Math.floor(this.server.maxRam / this.scriptRam(script)) }
+    async provideTask(target) {
+        if (this.serverRunningScript == true) {
+            this.reporter.report("Server Is Running Script")
+            return
+        }
+        const targetServer = new Server(ns, target ?? this.server.server)
+        const runAndReport = async (script) => {
+            await this.infect(target, script.name)
+            this.reporter.report("Running Script " + script.name)
+        }
+        if (this.shouldWeaken(targetServer)) { await runAndReport(HackScript.Weaken); return }
+        if (this.shouldGrow(targetServer)) { await runAndReport(HackScript.Grow); return }
+        await runAndReport(HackScript.Hack)
+    }
+    async infect(target, script) {
+        if (this.threads(script) <= 0) {
             this.reporter.report("Not Enough Threads To Run Script!")
             return
         }
-        if (this.server.isRunningScript(this.script) && infectAgain == false) {
-            this.reporter.report("Script is already running! Not Reinfecting.")
-            return
-        }
         this.server.killAll()
-        await this.server.copy(this.script)
-        this.server.run(this.script, this.threads, target ?? this.server.server)
-        this.reporter.report(this.script + " is running!")
+        await this.server.copy(script)
+        this.server.run(script, this.threads(script), target ?? this.server.server)
+        this.reporter.report(script + " is running!")
     }
 }
 export class Reporter {
