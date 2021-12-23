@@ -1,6 +1,7 @@
 const Info = Object.freeze({
     printPublic: false,
 	holdBackAmount: 1_000_000,
+	maxServers: 10,
 })
 
 export async function main(ns) {
@@ -99,6 +100,10 @@ class NethackCluster {
 		this.addServer()
 	}
 	async addServer() {
+		if (this.count >= Info.maxServers) {
+			this.report("Max Servers Hit!")
+			return
+		}
 		const cost = this.costOfNewServer
 		if (this.adjustedCash - cost >= 0) {
 			await this.hn.purchaseNode()
