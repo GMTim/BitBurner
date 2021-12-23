@@ -4,6 +4,7 @@ const Info = Object.freeze({
 	maxLevel: 20,
 	maxServers: 25,
 	startLevel: 2,
+	holdBack: 0,
 })
 
 export async function main(ns) {
@@ -54,11 +55,12 @@ class Server {
 	get nextLevel() { return this.level?.nextLevel ?? ServerCost.AllCosts[Info.startLevel - 1] }
 	get costOfUpgrade() { return this.nextLevel.cost }
 	get isMaxed() { return this.levelVal == Info.maxLevel }
+	get adjustedMoney() { return this.ns.getServerMoneyAvailable("home") - Info.holdBack }
 
 	buyUpgrade() {
 		const ns = this.ns
 		if (this.isMaxed) { return }
-		if (ns.getServerMoneyAvailable("home") >= this.costOfUpgrade) {
+		if (this.adjustedMoney >= this.costOfUpgrade) {
 			const ram = this.nextLevel.ram
 			if (this.exsists) {
 				ns.killall(this.name)
