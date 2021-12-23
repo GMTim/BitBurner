@@ -4,7 +4,7 @@ const Info = Object.freeze({
 	maxLevel: 20,
 	maxServers: 25,
 	startLevel: 2,
-	holdBack: 0,
+	holdBack: 1_000_000,
 })
 
 export async function main(ns) {

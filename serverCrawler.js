@@ -11,8 +11,8 @@ class ServerCrawler {
 		for (let server of servers) {
 			if (this.allServers.includes(server) == true) { continue }
 			this.allServers.push(server)
-			if (await this.command(ns, server, level)) { continue }
-			await ns.sleep(500)
+			const shouldSkipWait = await this.command(ns, server, level)
+			if (await shouldSkipWait !== true) { await ns.sleep(500) }
 			let nextLevelServers = ns.scan(server)
 			await this.serverLoop(nextLevelServers, level + 1)
 		}

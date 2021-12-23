@@ -1,4 +1,8 @@
-/** @param {NS} ns **/
+const Info = Object.freeze({
+    printPublic: false,
+	holdBackAmount: 1_000_000,
+})
+
 export async function main(ns) {
     while(true) {
 		let cluster = new NethackCluster(ns)
@@ -68,9 +72,8 @@ class NethackServer {
 		return upgrader
 	}
 	report(message) {
-		const printPublic = this.ns.args[1] == "p"
 		const cMessage = this.stats.name + ": " + message
-		if (printPublic) { this.ns.tprint(cMessage) }
+		if (Info.printPublic) { this.ns.tprint(cMessage) }
 		else { this.ns.print(cMessage) }
 	}
 }
@@ -82,7 +85,7 @@ class NethackCluster {
 	get nodes() { return Array(this.hn.numNodes()).fill().map((_, i) => new NethackServer(this.ns, i)) }
 	get count() { return this.nodes.length }
 	get cash() { return this.ns.getServerMoneyAvailable("home") }
-	get holdBack() { return this.ns.args[0] ?? 1000000 }
+	get holdBack() { return Info.holdBackAmount }
 	get adjustedCash() { return this.cash - this.holdBack }
 	get costOfNewServer() { return this.hn.getPurchaseNodeCost() }
 
@@ -103,9 +106,8 @@ class NethackCluster {
 		} else { this.report("New Server Too Expensive! ($" + cost.toLocaleString() + ")") }
 	}
 	report(message) {
-		const printPublic = this.ns.args[1] == "p"
 		const cMessage = "Cluser: " + message
-		if (printPublic) { this.ns.tprint(cMessage) }
+		if (Info.printPublic) { this.ns.tprint(cMessage) }
 		else { this.ns.print(cMessage) }
 	}
 }
