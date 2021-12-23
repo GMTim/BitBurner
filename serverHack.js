@@ -5,11 +5,12 @@ export class Server {
     }
     get hasRootAccess() { return this.ns.hasRootAccess(this.server) }
     get portsRequired() { return this.ns.getServerNumPortsRequired(this.server) }
-    get maxRam() { return this.ns.getServerMaxRam(server) }
+    get maxRam() { return this.ns.getServerMaxRam(this.server) }
     isRunningScript(script) { return this.ns.scriptRunning(script, this.server) }
-    killAll() { this.ns.killAll(this.server) }
-    copy(file) { this.ns.scp(file, this.server) }
-    run(script, threads, ...args) { this.ns.exec(script, this.server, threads, args) }
+    killAll() { this.ns.killall(this.server) }
+    async copy(file) { await this.ns.scp(file, this.server) }
+    run(script, threads, ...args) { this.ns.exec(script, this.server, threads, ...args) }
+    nuke() { this.ns.nuke(this.server) }
 }
 export class PortOpener {
     constructor(ns, name, command) {
@@ -48,36 +49,36 @@ export class Nuker {
         this.server = new Server(ns, server)
         this.reporter = new Reporter(ns, server)
     }
-    get canNuke() { return this.server.portsRequired <= PortOpener.portsThatCanBeOpened(ns) }
-    async nuke() {
+    get canNuke() { return this.server.portsRequired <= PortOpener.portsThatCanBeOpened(this.ns) }
+    nuke() {
         if (this.server.hasRootAccess == true) { this.reporter.report("Already Rooted!"); return }
         if (this.canNuke == false) { this.reporter.report("Not enough ports open."); return }
-        await this.ns.nuke()
+        this.server.nuke()
         this.reporter.report("Nuked!")
     }
 }
 export class HackInfector {
-    constructor(ns, script, server, reinfect) {
+    constructor(ns, server, script) {
         this.ns = ns
         this.server = ns.server
         this.script = script
         this.server = new Server(ns, server)
-        this.reinfect = reinfect ?? false
         this.reporter = new Reporter(ns, server)
     }
     get scriptRam() { return this.ns.getScriptRam(this.script) }
     get threads() { return Math.floor(this.server.maxRam / this.scriptRam) }
-    async infect(target) {
+    async infect(target, reinfect) {
+        const infectAgain = reinfect ?? false
         if (this.threads <= 0) {
             this.reporter.report("Not Enough Threads To Run Script!")
             return
         }
-        if (this.server.isRunningScript(this.script) && this.reinfect == false) {
+        if (this.server.isRunningScript(this.script) && infectAgain == false) {
             this.reporter.report("Script is already running! Not Reinfecting.")
             return
         }
         this.server.killAll()
-        this.server.copy(this.script)
+        await this.server.copy(this.script)
         this.server.run(this.script, this.threads, target ?? this.server.server)
         this.reporter.report(this.script + " is running!")
     }
