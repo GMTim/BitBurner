@@ -6,11 +6,17 @@ export class Server {
     get hasRootAccess() { return this.ns.hasRootAccess(this.server) }
     get portsRequired() { return this.ns.getServerNumPortsRequired(this.server) }
     get maxRam() { return this.ns.getServerMaxRam(this.server) }
+    get availableMoney() { return this.ns.getServerMoneyAvailable(this.server) }
+    get maxMoney() { return this.ns.getServerMaxMoney(this.server) }
+    get requiredHackingLevel() { return this.ns.getServerRequiredHackingLevel(this.server) }
+    get canHack() { return this.requiredHackingLevel <= this.ns.getHackingLevel() }
     isRunningScript(script) { return this.ns.scriptRunning(script, this.server) }
     killAll() { this.ns.killall(this.server) }
     async copy(file) { await this.ns.scp(file, this.server) }
     run(script, threads, ...args) { this.ns.exec(script, this.server, threads, ...args) }
     nuke() { this.ns.nuke(this.server) }
+
+    static home(ns) { return new Server(ns, "home") }
 }
 export class PortOpener {
     constructor(ns, name, command) {
