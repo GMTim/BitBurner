@@ -82,17 +82,21 @@ export class HackInfector {
         this.reporter = new Reporter(ns, server)
     }
     get serverRunningScript() { return HackScript.allNames.reduce((v, n) => v || this.server.isRunningScript(n), false) }
+    get serverRunningHack() { return this.server.isRunningScript(HackScript.Hack.name) }
+    get serverRunningWeaken() { return this.server.isRunningScript(HackScript.Weaken.name) }
+    get serverRunningGrow() { return this.server.isRunningScript(HackScript.Grow.name) }
     shouldWeaken(server) { return server.minSercurityLevel + 5 <= server.maxSercurityLevel }
     shouldGrow(server) { return server.maxMoney * 0.75 >= server.availableMoney }
     scriptRam(script) { return this.ns.getScriptRam(script) }
     threads(script) { return Math.floor(this.server.maxRam / this.scriptRam(script)) }
     async provideTask(target) {
-        if (this.serverRunningScript == true) {
-            this.reporter.report("Server Is Running Script")
-            return
-        }
         const targetServer = new Server(this.ns, target ?? this.server.server)
         const runAndReport = async (script) => {
+            if (this.server.isRunningScript(script.name)) {
+                this.reporter.report("Script Already Running - " + script.name)
+                return
+            }
+            this.server.killAll()
             await this.infect(target, script.name)
             this.reporter.report("Running Script " + script.name)
         }
