@@ -6,8 +6,14 @@ const Info = Object.freeze({
     holdBack: 0,
     maxWanted: 5_000,
     minWanted: 2_000,
+    minRespect: 500_000,
+    minPower: 200,
+    minTerritory: 0.10,
+    maxTerritory: 0.15,
 })
 let isReducingCrime = false
+let isGainingTerritory = false
+let money = 0
 
 /** @param {import(".").NS } ns */
 export async function main(ns) {
@@ -15,11 +21,24 @@ export async function main(ns) {
     while(gang.inGang) {
         recruit(gang)
         for (let banger of GNS.GangBanger.all(ns)) {
+            money = ns.getServerMoneyAvailable("home") - Info.holdBack
             shouldAscend(gang, banger)
             assignTasks(gang, banger)
             buyEquipment(banger)
         }
         await ns.sleep(500)
+        if (gang.power >= Info.minPower && money >= 0 && gang.territory < Info.minTerritory) {
+            if (gang.territory < Info.maxTerritory || isGainingTerritory) {
+                isGainingTerritory = true
+                gang.startWar()
+            } else {
+                gang.stopWar()
+                isGainingTerritory = false
+            }
+        } else {
+            gang.stopWar()
+            isGainingTerritory = false
+        }
     }
 }
 
@@ -44,17 +63,21 @@ const assignTasks = (gang, gangBanger) => {
             return
         }
     }
+    if (
+        gangBanger.earnedRespect > gang.respect / 2
+        || (money > 0 && gang.power < Info.minPower)
+        || gang.territoryWarfareEngaged) { gangBanger.setTask(GNS.Task.territoryWarfare(ns).name); return }
+    if (gang.respect < Info.minRespect) { gangBanger.setTask(GNS.Task.terrorism(ns).name); return }
     isReducingCrime = false
-    gangBanger.setTask(GNS.Task.traffickIllegalArms(ns).name)
+    gangBanger.setTask(GNS.Task.humanTrafficking(ns).name)
 }
 /** @param {GNS.GangBanger} gangBanger */
 const buyEquipment = (gangBanger) => {
-    let money = gangBanger.ns.getServerMoneyAvailable("home") - Info.holdBack
     for (let equipmentRaw of GNS.Equipment.all(gangBanger.ns)) {
         /** @type {GNS.Equipment} */
         let equipment = equipmentRaw
-        if (gangBanger.hasEquipment(equipment.name)) { continue }
-        if (equipment.cost <= money) {
+        if (gangBanger.hasEquipment(equipment.name) || gangBanger.hasAugmentation(equipment.name)) { continue }
+        if (equipment.cost <= money - equipment.cost) {
             gangBanger.purchaseEquipment(equipment.name)
             break
         }
@@ -65,6 +88,6 @@ const buyEquipment = (gangBanger) => {
  * @param {GNS.GangBanger} gangBanger */
 const shouldAscend = (gang, gangBanger) => {
     if (gang.respect < gangBanger.earnedRespect * 2) { return }
-    if (gangBanger.str.ascensionMultiplier < gangBanger.str.multiplier + 1) { return }
+    if (gangBanger.ascensionStr < gangBanger.str.ascensionMultiplier + 1) { return }
     gangBanger.ascend()
 }

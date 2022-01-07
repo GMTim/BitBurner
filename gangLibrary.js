@@ -22,12 +22,16 @@ export class Gang {
     get wantedLevel() { return this.information.wantedLevel }
     get wantedLevelGainRate() { return this.information.wantedLevelGainRate }
     get wantedPenalty() { return this.information.wantedPenalty }
-    get otherGangInformation() { return this.gang.getOtherGangInformation() }
+    get otherGangInformation() {
+        return this.gang.getOtherGangInformation() }
     get tasks() { return Task.all(this.ns) }
     get inGang() { return this.gang.inGang() }
     /** Functions */
     changeToWinClash(gangName) { return this.gang.getChanceToWinClash(gangName) }
     recruitMember(name) { return this.gang.recruitMember(`${name}-${GangBanger.all(this.ns).length}`) }
+    startWar() { this.setWar(true) }
+    stopWar() { this.setWar(false) }
+    setWar(engage) { this.gang.setTerritoryWarfare(engage) }
 }
 export class GangBanger {
     /** @param {import(".").NS } ns */
@@ -40,11 +44,17 @@ export class GangBanger {
     get ascensionResult() { return this.gang.getAscensionResult(this.name) }
     get stats() { return GangMemeberStat.all(this.gang.getMemberInformation(this.name)) }
     get agi() { return this.stats.filter((s) => s.name == "agi")[0] }
+    get ascensionAgi() { return this.agi.ascensionMultiplier * (this.ascensionResult?.agi ?? 0) }
     get cha() { return this.stats.filter((s) => s.name == "cha")[0] }
+    get ascensionCha() { return this.cha.ascensionMultiplier * (this.ascensionResult?.cha ?? 0) }
     get def() { return this.stats.filter((s) => s.name == "def")[0] }
+    get ascensionDef() { return this.def.ascensionMultiplier * (this.ascensionResult?.def ?? 0) }
     get dex() { return this.stats.filter((s) => s.name == "dex")[0] }
+    get ascensionDex() { return this.dex.ascensionMultiplier * (this.ascensionResult?.dex ?? 0) }
     get hack() { return this.stats.filter((s) => s.name == "hack")[0] }
+    get ascensionHack() { return this.hack.ascensionMultiplier * (this.ascensionResult?.hack ?? 0) }
     get str() { return this.stats.filter((s) => s.name == "str")[0] }
+    get ascensionStr() { return this.str.ascensionMultiplier * (this.ascensionResult?.str ?? 0) }
     get augmentations() { return this.stats.augmentations }
     get earnedRespect() { return this.stats.earnedRespect }
     get moneyGain() { return this.stats.moneyGain }
@@ -55,11 +65,12 @@ export class GangBanger {
     /** Functions */
     ascend() { return this.gang.ascendMember(this.name) }
     purchaseEquipment(equipment) { return this.gang.purchaseEquipment(this.name, equipment) }
-    setTask(task) { return this.gang.setMemberTask(this.name, task) }
-    startWar() { this.setWar(true) }
-    stopWar() { this.setWar(false) }
-    setWar(engage) { this.setTerritoryWarfare(engage) }
+    setTask(task) {
+        if (this.task == task) { return true }
+        return this.gang.setMemberTask(this.name, task)
+    }
     hasEquipment(equipment) { return this.upgrades.includes(equipment) }
+    hasAugmentation(augmentation) { return this.augmentations.includes(augmentation) }
     /** Static Functions */
     /** @param {import(".").NS } ns */
     static all(ns) { return ns.gang.getMemberNames().map((m) => new GangBanger(ns, m)) }
@@ -86,7 +97,11 @@ export class Equipment {
     /**
      * @param {import(".").NS } ns 
      * @return {[Equipment]} */
-    static all(ns) { return ns.gang.getEquipmentNames().map((e) => new Equipment(ns, e)) }
+    static all(ns) {
+        let all = ns.gang.getEquipmentNames().map((e) => new Equipment(ns, e))
+        all.sort((a, b) => { return a.cost - b.cost })
+        return all
+    }
 }
 export class GangMemeberStat {
     constructor(score, ascensionMultiplier, ascensionXP, xp, multiplier, name) {
@@ -179,3 +194,22 @@ export const Foci = Object.freeze({
     hacking: "Hacking",
     none: "None",
 })
+export class OtherGang {
+    /**
+     * @param {import(".").NS } ns
+     * @param {string} name 
+     * @param {import(".").GangOtherInfoObject} info */
+    constructor(ns, name, info) {
+        this.ns = ns
+        this.gang = ns
+        this.name = name
+        this.info = info
+    }
+    /** Static Functions */
+    static all(ns) {
+        /** @type {import(".").GangOtherInfo} */
+        let gangs = ns.gang.getOtherGangInformation()
+        let keys = Object.keys(gangs)
+        return keys.map((k) => new OtherGang(ns, k, gangs[k]))
+    }
+}
