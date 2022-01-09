@@ -32,6 +32,7 @@ export class Gang {
     startWar() { this.setWar(true) }
     stopWar() { this.setWar(false) }
     setWar(engage) { this.gang.setTerritoryWarfare(engage) }
+    createGang(faction) { this.gang.createGang(faction) }
 }
 export class GangBanger {
     /** @param {import(".").NS } ns */

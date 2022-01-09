@@ -1,0 +1,104 @@
+// Comp Server (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.md)
+// brutessh (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.brutessh.md)
+// ftpcrack (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.ftpcrack.md)
+// getServer (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getserver.md)
+// hasRootAccess (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.hasrootaccess.md)
+// httpworm (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.httpworm.md)
+// nuke (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.nuke.md)
+// relaysmtp (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.relaysmtp.md)
+// scan (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.scan.md)
+// sqlinject (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.sqlinject.md)
+
+// Hack Server
+// getGrowTime (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getgrowtime.md)
+// getHackingLevel (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.gethackinglevel.md)
+// getHackingMultipliers (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.gethackingmultipliers.md)
+// getHackTime (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.gethacktime.md)
+// getServerGrowth (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getservergrowth.md)
+// getServerMaxMoney (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getservermaxmoney.md)
+// getServerMinSecurityLevel (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getserverminsecuritylevel.md)
+// getServerMoneyAvailable (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getservermoneyavailable.md)
+// getServerNumPortsRequired (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getservernumportsrequired.md)
+// getServerRequiredHackingLevel (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getserverrequiredhackinglevel.md)
+// getServerSecurityLevel (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getserversecuritylevel.md)
+// getWeakenTime (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getweakentime.md)
+// grow (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.grow.md)
+// growthAnalyze (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.growthanalyze.md)
+// growthAnalyzeSecurity (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.growthanalyzesecurity.md)
+// hack (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.hack.md)
+// hackAnalyze (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.hackanalyze.md)
+// hackAnalyzeChance (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.hackanalyzechance.md)
+// hackAnalyzeSecurity (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.hackanalyzesecurity.md)
+// hackAnalyzeThreads (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.hackanalyzethreads.md)
+// weaken (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.weaken.md)
+// weakenAnalyze (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.weakenanalyze.md)
+
+// Hacknet Management
+// getHacknetMultipliers (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.gethacknetmultipliers.md)
+
+// Purched Server Management
+// deleteServer (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.deleteserver.md)
+// getPurchasedServerCost (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.md)
+// getPurchasedServerLimit (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getpurchasedserverlimit.md)
+// getPurchasedServerMaxRam (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getpurchasedservermaxram.md)
+// getPurchasedServers (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getpurchasedservers.md)
+// purchaseServer (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.purchaseserver.md)
+// serverExists (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.serverexists.md)
+
+// Script Management
+// exec (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.exec.md)
+// getHostname (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.gethostname.md)
+// getRunningScript (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getrunningscript.md)
+// getScriptExpGain (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getscriptexpgain.md)
+// getScriptExpGain (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getscriptexpgain_1.md)
+// getScriptIncome (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getscriptincome.md)
+// getScriptIncome (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getscriptincome.md)
+// getScriptLogs (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getscriptlogs.md)
+// getScriptName (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.md)
+// getScriptRam (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.md)
+// getServerMaxRam (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getservermaxram.md)
+// getServerUsedRam (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getserverusedram.md)
+// isRunning (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.isrunning.md)
+// kill (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.kill.md)
+// killall (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.killall.md)
+// ps (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.ps.md)
+// run (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.run.md)
+// scriptKill (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.scriptkill.md)
+// scriptRunning (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.scriptrunning.md)
+// spawn (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.spawn.md)
+// tail (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.tail.md)
+
+// File Handler
+// class FileHandler {
+//     /** @param {import(".").NS} ns */
+//     constructor(ns) {
+//         this.ns = ns
+//     }
+//     /// Functions
+//     /** Clear data from a file.
+//      * @param {string} filename
+//     */
+//     clear(filename) { this.ns.clear(filename) }
+//     /** Clear data from a file.
+//      * @param {string} filename
+//     */
+//     clear(filename) { this.ns.clear(filename) }
+// }
+// fileExists (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.fileexists.md)
+// ls (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.ls.md)
+// read (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.read.md)
+// rm (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.md)
+// scp (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.scp.md)
+
+// BitNode Info
+// getBitNodeMultipliers (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getbitnodemultipliers.md)
+
+// Faction Info
+// getFavorToDonate (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getfavortodonate.md)
+
+// Source File Management
+// getOwnedSourceFiles (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getownedsourcefiles.md)
+
+// Player Management
+// getPlayer (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.getplayer.md)
+// getTimeSinceLastAug (https://github.com/danielyxie/bitburner/blob/dev/markdown/bitburner.ns.gettimesincelastaug.md)
